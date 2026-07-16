@@ -1,40 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from "react-icons/fa";
-import { HiOutlineSparkles, HiOutlineTruck, HiOutlineClock } from "react-icons/hi2";
-import StoreCard from "../components/StoreCard/StoreCard";
-import ProductCard from "../components/ProductCard/ProductCard";
-import { getAllStore } from "../api/store.api";
-import { getAllproduct } from "../api/product.api";
+import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import { FaArrowLeft, FaArrowRight, FaMapMarkerAlt } from "react-icons/fa"
+import { HiOutlineSparkles, HiOutlineTruck, HiOutlineClock } from "react-icons/hi2"
+import StoreCard from "../components/StoreCard/StoreCard"
+import ProductCard from "../components/ProductCard/ProductCard"
+import { getAllStore } from "../api/store.api"
+import { getAllproduct } from "../api/product.api"
 import img02 from "../assets/img02.jpg"
 import img03 from "../assets/img03.jpg"
+import img00 from "../assets/img00.jpg"
 
 function Home() {
-  const [stores, setStores] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [stores, setStores] = useState([])
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
-    loadStores();
-    loadProducts();
-  }, []);
+    loadStores()
+    loadProducts()
+  }, [])
 
   const loadStores = async () => {
     try {
-      const data = await getAllStore();
-      setStores(data || []);
+      const data = await getAllStore()
+      setStores(data || [])
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   const loadProducts = async () => {
     try {
-      const data = await getAllproduct();
-      setProducts(data || []);
+      const data = await getAllproduct()
+      setProducts(data || [])
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return (
     <div className="bg-white">
@@ -92,22 +93,22 @@ function Home() {
 
       <div className="w-[84%] mx-auto border-t border-gray-300 mt-8"></div>
 
-      <section className="max-w-7xl mx-auto px-4 py-14 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+      <section className="w-[1300px] flex justify-between mx-auto px-4 py-14 ">
         <div>
           <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineTruck className="text-blue-600" /> Free Pickup & Delivery
+            <HiOutlineTruck className="text-black" /> Free Pickup & Delivery
           </h3>
           <p className="text-sm text-gray-500 mt-1">We collect and drop off your laundry at your door.</p>
         </div>
         <div>
           <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineClock className="text-blue-600" /> Support 24/7
+            <HiOutlineClock className="text-black" /> Support 24/7
           </h3>
           <p className="text-sm text-gray-500 mt-1">Our team is always here to help with any issue.</p>
         </div>
         <div>
           <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineSparkles className="text-blue-600" /> 100% Verified Vendors
+            <HiOutlineSparkles className="text-black" /> 100% Verified Vendors
           </h3>
           <p className="text-sm text-gray-500 mt-1">Every store is reviewed and rated by real customers.</p>
         </div>
@@ -115,7 +116,7 @@ function Home() {
 
       <div className="w-[84%] mx-auto border-t border-gray-300"></div>
 
-      <section className="max-w-7xl mx-auto px-4 py-10">
+      <section className="w-[1340px] mx-auto px-4 py-10">
         <div className="flex items-end justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900">Featured Stores</h2>
@@ -141,7 +142,7 @@ function Home() {
         {stores.length === 0 ? (
           <p className="text-gray-500">No stores found</p>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {stores.slice(0, 6).map((store) => (
               <StoreCard key={store._id} store={store} />
             ))}
@@ -149,13 +150,16 @@ function Home() {
         )}
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-8">Popular Services</h2>
+      <div className="w-[84%] mx-auto border-t border-gray-300 mt-8"></div>
+
+      <section className="w-[1340px] mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Popular Services</h2>
+        <p className="text-gray-400 text-sm mb-8">Pick service wheather you what to wash, iron and more</p>
 
         {products.length === 0 ? (
-          <p className="text-gray-500">No services found</p>
+          <p className="text-gray-500 mt-5">No services found</p>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
             {products.slice(0, 8).map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -163,44 +167,70 @@ function Home() {
         )}
       </section>
 
-    
-      <section className="max-w-7xl mx-auto px-4 pb-20">
+      <section className="w-[1340px] mx-auto px-4 py-14">
         <div className="grid md:grid-cols-2 gap-6 items-stretch">
-          <div className="relative rounded-3xl overflow-hidden min-h-[320px]">
+
+
+          <div className="relative rounded-3xl overflow-hidden min-h-[280px]">
             <img
-              src="https://images.unsplash.com/photo-1489274495757-95c7c837b101?w=700"
-              alt="Clean folded clothes"
+              src={img00}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur rounded-2xl px-5 py-3 flex items-center gap-3">
-              <span className="text-blue-600 font-bold text-lg">30% OFF</span>
+            <div className="absolute top-6 left-6 bg-white/90 backdrop-blur rounded-2xl px-5 py-3 flex items-center gap-3">
+              <span className="text-black font-bold text-lg">Flat 25% OFF</span>
               <span className="text-xs text-gray-500">
-                On your first booking
+                On dry cleaning
                 <br />
-                Till 31 August, 2026
+                Valid till 31 August, 2026
               </span>
             </div>
           </div>
 
-          <div className="rounded-3xl bg-blue-700 text-white p-10 flex flex-col justify-center">
-            <h2 className="text-3xl font-bold mb-4">
-              Never Worry About Laundry Again
-            </h2>
-            <p className="text-gray-300 mb-8 max-w-sm">
-              Schedule a pickup in minutes, track your order in real time,
-              and get fresh, folded laundry back at your door.
+
+          <div className="rounded-3xl overflow-hidden min-h-[480px] bg-white text-black flex flex-col justify-center p-10">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-2 text-gray-400">
+              Limited Time Offer
             </p>
+            <h3 className="text-3xl font-bold mb-4 leading-tight">
+              Free Pickup on Orders Above ₹499
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-sm leading-relaxed">
+              Schedule a doorstep pickup in seconds and skip the delivery fee on
+              every qualifying order. No coupon needed — the discount is applied
+              automatically at checkout.
+            </p>
+
+            <div className="flex items-center gap-6 mb-8 text-sm">
+              <div>
+                <p className="text-lg font-bold">10k+</p>
+                <p className="text-gray-400 text-xs">Happy customers</p>
+              </div>
+              <div className="w-px h-8 bg-gray-700" />
+              <div>
+                <p className="text-lg font-bold">24 hrs</p>
+                <p className="text-gray-400 text-xs">Pickup window</p>
+              </div>
+              <div className="w-px h-8 bg-gray-700" />
+              <div>
+                <p className="text-lg font-bold">4.7★</p>
+                <p className="text-gray-400 text-xs">Average rating</p>
+              </div>
+            </div>
+
             <Link
               to="/stores"
-              className="inline-flex items-center gap-2 bg-black text-white-900 px-6 py-3 rounded-full font-semibold w-fit hover:bg-gray-100 transition"
+              className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 rounded-full font-semibold w-fit hover:scale-102 transition"
             >
-              Get Started <FaArrowRight className="text-xs" />
+              Book Now <FaArrowRight className="text-xs" />
             </Link>
           </div>
+
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 pb-20">
+        <div className="w-[84%] mx-auto border-t border-gray-300 mt-4 mb-14"></div>
+
+      <section className="w-[1340px] mx-auto px-4 pb-20">
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
           Why Choose Us?
         </h2>
@@ -230,7 +260,7 @@ function Home() {
       </section>
 
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

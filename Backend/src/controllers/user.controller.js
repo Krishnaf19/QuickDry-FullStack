@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 import { isValidObjectId } from "mongoose"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { Cart } from "../models/cart.model.js"
+import { log } from "console"
 
 
 
@@ -48,6 +49,11 @@ const registerUser = asyncHandler(async (req, res) => {
         image: image?.url || ""
     })
 
+    const accessToken = user.generateAccessToken()
+    const newRefreshToken = user.generateRefreshToken()
+    user.refreshToken = newRefreshToken
+    await user.save({ validateBeforeSave: false })
+
     const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
     if (!createdUser) {
@@ -59,10 +65,21 @@ const registerUser = asyncHandler(async (req, res) => {
         items: []
     });
 
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
     return res
         .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", newRefreshToken, options)
         .json(
-            new ApiResponse(200, createdUser, "User registered successfully")
+            new ApiResponse(200, {
+                user: createdUser,
+                accessToken,
+                refreshToken: newRefreshToken
+            }, "User registered successfully")
         )
 })
 
@@ -74,6 +91,8 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!email || !password) {
         throw new ApiError(400, "Email and password both are required")
     }
+
+    console.log(req.body);
 
     const user = await User.findOne({ email })
 

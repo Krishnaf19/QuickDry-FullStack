@@ -25,22 +25,17 @@ function Header() {
     {
       name: "Cart",
       slug: "/cart",
-      active: authStatus && role === "user",
+      active: true,
     },
     {
       name: "Orders",
       slug: "/my-orders",
-      active: authStatus && role === "user",
-    },
-    {
-      name: "Store",
-      slug: "/store",
-      active: authStatus && role === "user",
+      active: true,
     },
     {
       name: "Profile",
       slug: "/profile",
-      active: authStatus,
+      active: true,
     },
   ];
 

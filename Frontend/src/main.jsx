@@ -10,12 +10,12 @@ import App from "./App";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Stores from "./pages/Store";
+import Stores from "./pages/Stores";
 import StoresProduct from "./pages/StoresProduct";
 import ProductDetails from "./pages/ProductDetails";
 import Products from "./pages/Products";
-import UserCart from "./pages/UserCart";
-import MyOrders from "./pages/Order";
+import Cart from "./pages/Cart";
+import Order from "./pages/Order"
 import Profile from "./pages/Profile";
 import Protected from "./components/Protected/Protected";
 
@@ -25,68 +25,85 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "/login",
+        element: <Login />
+      },
+
+      {
+        path: "/signup",
+        element: <Signup />
+      },
+
+      {
         path: "/",
-        element: <Home />,
-      },
-
-      {
-        path: "stores",
-        element: <Stores />,
-      },
-
-      {
-        path: "stores/:storeId",
-        element: <StoresProduct />,
-      },
-
-      {
-        path: "products",
-        element: <Products />,
-      },
-
-      {
-        path: "products/:productId",
-        element: <ProductDetails />,
-      },
-
-      {
-        path: "login",
-        element: (
-            <Login />
-        ),
-      },
-
-      {
-        path: "signup",
-        element: (
-            <Signup />
-        ),
-      },
-      {
-        path: "cart",
         element: (
           <Protected>
-            <UserCart />
+            <Home />
           </Protected>
         ),
       },
 
       {
-        path: "my-orders",
+        path: "/stores",
         element: (
           <Protected>
-            <MyOrders />
+            <Stores />
           </Protected>
         ),
       },
 
       {
-        path: "profile",
+        path: "/stores/:storeId",
+        element: (
+          <Protected>
+            <StoresProduct />
+          </Protected>
+        ),
+      },
+
+      {
+        path: "/products",
+        element: (
+          <Protected>
+            <Products />
+          </Protected>
+        ),
+      },
+
+      {
+        path: "/products/:productId",
+        element:(
+          <Protected>
+            <ProductDetails />
+          </Protected>
+        ),
+      },
+
+      {
+        path: "/cart",
+        element:(
+          <Protected>
+            <Cart />
+          </Protected>
+        )
+      },
+
+      {
+        path: "/my-orders",
+        element: (
+          <Protected>
+            <Order />
+          </Protected>
+        )
+      },
+
+      {
+        path: "/profile",
         element: (
           <Protected>
             <Profile />
           </Protected>
-        ),
+        )
       },
     ],
   },

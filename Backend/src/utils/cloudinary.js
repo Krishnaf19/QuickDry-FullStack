@@ -15,11 +15,17 @@ const uploadOnCloudinary = async (localFilePath) => {
         const response = await cloudinary.uploader.upload(localFilePath,
             { resource_type: 'auto' })
         console.log("File uploaded on cloudinary ", response.url);
-        fs.unlinkSync(localFilePath)
+        if (fs.existsSync(localFilePath)) fs.unlinkSync(localFilePath)
         return response
     } catch (error) {
-        fs.unlinkSync(localFilePath);
-
+        if (localFilePath && fs.existsSync(localFilePath)) {
+            try {
+                fs.unlinkSync(localFilePath)
+            } catch (cleanupError) {
+                console.error("Failed to cleanup temp file", cleanupError)
+            }
+        }
+        console.error("Cloudinary upload failed", error)
         return null;
     }
 }

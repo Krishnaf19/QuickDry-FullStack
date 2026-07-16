@@ -7,11 +7,11 @@ import React, { useState, useEffect } from 'react'
 import { registerUser } from '../../api/auth.api'
 import { getCurrentUser } from '../../api/user.api'
 
-function Signup() {
+function SignupForm() {
 
   const { register, handleSubmit } = useForm()
   const navigate = useNavigate()
-  const [error, seterror] = useState()
+  const [error, setError] = useState("")
   const dispatch = useDispatch()
   const authStatus = useSelector((state) => state.auth.status)
 
@@ -22,65 +22,60 @@ function Signup() {
   }, [authStatus, navigate])
 
   const signupHandleSubmit = async (data) => {
-    seterror("")
+
+    setError("")
+
     try {
+      const formData = new FormData()
+      formData.append("fullName", data.fullName)
+      formData.append("email", data.email)
+      formData.append("password", data.password)
+      formData.append("phoneNumber", data.phoneNumber)
+      formData.append("userAddress", data.userAddress)
+      formData.append("image", data.image[0])
 
-      const formData = new FormData();
-
-      formData.append("fullName", data.fullName);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-      formData.append("phoneNumber", data.phoneNumber);
-      formData.append("userAddress", data.userAddress);
-      formData.append("image", data.image[0]);
-
-      const session = await registerUser(formData);
-
+      const session = await registerUser(formData)
       if (session) {
         const userData = await getCurrentUser()
         if (userData) dispatch(login(userData))
         navigate("/")
       }
     } catch (error) {
-      seterror(error.response?.data?.message ||
-        error.message ||
-        "Registration failed"
-      )
+      setError(error)
     }
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white py-12">
-      <div className={`mx-auto w-full max-w-lg bg-white rounded-lg p-10 shadow-sm border border-gray-200`}>
-        <div className="mb-8 flex justify-center transform hover:scale-110 transition-transform duration-300">
-          <span className="inline-block w-full max-w-20 text-2xl font-bold text-blue-600">
-            Laundry
-          </span>
-        </div>
+    <div className="flex items-center justify-center min-h-scree py-12">
+      <div className="mx-auto w-full max-w-lg bg-white/5 border border-black/10 rounded-2xl p-10">
 
-        <h2 className="text-center text-3xl font-bold leading-tight text-gray-900">Create Account</h2>
+        <h2 className="text-center text-3xl font-bold text-black">Create Account</h2>
 
-        <p className="mt-3 text-center text-sm text-gray-600">
+        <p className="mt-3 text-center text-sm text-gray-400">
           Already have an account?&nbsp;
           <Link
             to="/login"
-            className="font-semibold text-blue-600 transition-all duration-200 hover:text-blue-700"
+            className="font-semibold text-black inline-block transition-transform duration-300 hover:scale-95"
           >
             Sign In
           </Link>
         </p>
 
-        {error && <p className="text-red-600 mt-6 text-center font-medium text-sm">{error}</p>}
+        {error && (
+          <p className="text-red-400 mt-6 text-center font-medium text-sm">
+            {error}
+          </p>
+        )}
 
-        <form onSubmit={handleSubmit(signupHandleSubmit)} className="mb-5">
+        <form onSubmit={handleSubmit(signupHandleSubmit)} className="mb-5" encType="multipart/form-data">
           <div className="space-y-5 mt-8">
 
             <Input
               label="Full Name"
-              placeholder="Enter your full name"
+              placeholder="Enter your name"
               autoComplete="name"
               {...register("fullName", {
-                required: "Full name is required",
+                required: true,
               })}
             />
 
@@ -90,10 +85,10 @@ function Signup() {
               type="email"
               autoComplete="email"
               {...register("email", {
-                required: "Email is required",
+                required: true,
                 validate: {
                   matchPattern: (value) =>
-                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+                    /(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]+[\.][a-z]+$)/.test(value) ||
                     "Email must be valid",
                 },
               })}
@@ -105,10 +100,10 @@ function Signup() {
               type="password"
               autoComplete="new-password"
               {...register("password", {
-                required: "Password is required",
+                required: true,
                 minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
+                  value: 8,
+                  message: "Password must be at least 8 characters",
                 },
               })}
             />
@@ -119,11 +114,7 @@ function Signup() {
               type="tel"
               autoComplete="tel"
               {...register("phoneNumber", {
-                required: "Phone number is required",
-                pattern: {
-                  value: /^[6-9]\d{9}$/,
-                  message: "Enter a valid phone number",
-                },
+                required: true,
               })}
             />
 
@@ -132,26 +123,25 @@ function Signup() {
               placeholder="Enter your address"
               autoComplete="street-address"
               {...register("userAddress", {
-                required: "Address is required",
+                required: true,
               })}
             />
 
-            <Input
-              label="Profile Image"
-              type="file"
-              accept="image/*"
-              {...register("image", {
-                required: "Profile image is required",
-              })}
-            />
+            <div>
+              <label className="block text-sm font-medium text-black mb-1.5">
+                Profile Photo
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-black file:text-white file:font-semibold file:text-sm hover:scale-102 file:cursor-pointer cursor-pointer"
+                {...register("image", { required: true })}
+              />
+            </div>
 
-            <Button
-              type="submit"
-              className="w-full cursor-pointer"
-            >
+            <Button type="submit" className="w-full cursor-pointer">
               Create Account
             </Button>
-
           </div>
         </form>
       </div>
@@ -159,5 +149,4 @@ function Signup() {
   )
 }
 
-export default Signup
-
+export default SignupForm

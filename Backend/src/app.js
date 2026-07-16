@@ -34,14 +34,4 @@ app.use("/api/v1/review", reviewRoute)
 app.use("/api/v1/cart", cartRoute)
 app.use("/api/v1/order", orderRoute)
 
-app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500
-    return res.status(statusCode).json({
-        success: false,
-        message: err.message || "Internal Server Error",
-        errors: err.errors || []
-    })
-})
-
-
 export default app

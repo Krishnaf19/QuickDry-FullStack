@@ -26,7 +26,7 @@ function Stores() {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-28 pb-12">
+    <div className="bg-gray-50 pt-15 pb-15">
       <div className="max-w-7xl mx-auto px-6">
 
         <h1 className="text-4xl font-bold text-gray-900 mb-2">

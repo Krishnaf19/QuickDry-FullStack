@@ -3,10 +3,10 @@ import Container from "./Container/Container"
 import Footer from "./Footer/Footer"
 import Header from "./Header/Header"
 import Input from "./Input/Input"
-import Login from "./LoginForm/Login"
+import LoginForm from "./LoginForm/LoginForm"
 import ProductCard from "./ProductCard/ProductCard"
 import ReviewCard from "./ReviewCard/ReviewCard"
-import Signup from "./SignupForm/Signup"
+import SignupForm from "./SignupForm/SignupForm"
 import StoreCard from "./StoreCard/StoreCard"
 import Protected from "./Protected/Protected"
 
@@ -16,10 +16,10 @@ export {
     Footer,
     Header,
     Input,
-    Login,
+    LoginForm,
     ProductCard,
     ReviewCard,
-    Signup,
+    SignupForm,
     StoreCard,
     Protected
 }

@@ -13,7 +13,7 @@ function App() {
     getCurrentUser()
       .then((userData) => {
         if (userData) {
-          dispatch(login({ userData }))
+          dispatch(login(userData))
         } else {
           dispatch(logout())
         }
@@ -28,7 +28,7 @@ function App() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-4 border-t-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-4 border-t-black mx-auto"></div>
           <p className="mt-6 text-lg font-semibold text-gray-900">Loading...</p>
           <p className="mt-2 text-sm text-gray-500">Please wait while we fetch your data</p>
         </div>
@@ -48,4 +48,3 @@ function App() {
 }
 
 export default App
-
