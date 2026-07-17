@@ -64,7 +64,7 @@ function ProductCard({ product }) {
           disabled={status === "loading"}
           className={`flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-full transition-colors ${
             status === "added"
-              ? "bg-green-500 text-white"
+              ? "scale-101"
               : status === "error"
               ? "bg-red-500 text-white"
               : "bg-black text-white hover:bg-gray-800"

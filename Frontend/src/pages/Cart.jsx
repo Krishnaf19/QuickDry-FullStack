@@ -4,6 +4,7 @@ import { createOrder } from "../api/order.api"
 import { FaTrash } from "react-icons/fa"
 
 function Cart() {
+  
   const [cart, setCart] = useState(null)
   const [loading, setLoading] = useState(true)
   const [busyId, setBusyId] = useState(null)
@@ -11,7 +12,7 @@ function Cart() {
 
   const fetchCart = async () => {
     try {
-      setCart((await getUserCart()))
+      setCart(await getUserCart())
     } catch (error) {
       setCart({ items: [] })
     } finally {
@@ -23,12 +24,14 @@ function Cart() {
     fetchCart()
   }, [])
 
+
   const run = async (fn, productId) => {
     setBusyId(productId)
     try {
-      setCart((await fn(productId)))
+      await fn(productId)
+      await fetchCart()
     } catch (error) {
-      throw error
+      alert(error.response?.data?.message || "Something went wrong")
     } finally {
       setBusyId(null)
     }
@@ -36,9 +39,10 @@ function Cart() {
 
   const handleClearCart = async () => {
     try {
-      setCart((await clearCart()))
+      await clearCart()
+      await fetchCart()
     } catch (error) {
-      throw error
+      alert(error.response?.data?.message || "Could not clear cart")
     }
   }
 
@@ -46,10 +50,9 @@ function Cart() {
     setPlacingOrder(true)
     try {
       await createOrder()
-      setCart((await getUserCart()))
+      await fetchCart()
       alert("Order placed successfully")
     } catch (error) {
-      throw error
       alert(error.response?.data?.message || "Could not place order")
     } finally {
       setPlacingOrder(false)
@@ -66,18 +69,10 @@ function Cart() {
 
   const items = cart?.items || []
 
-  let totalQuantity = 0
-  items.forEach((item) => {
-    totalQuantity += item.quantity
-  })
-  totalQuantity = cart?.totalQuantity ?? totalQuantity
-
-  let totalPrice = 0
-  items.forEach((item) => {
-    totalPrice += item.product.price * item.quantity
-  })
-  totalPrice = cart?.totalPrice ?? totalPrice
-
+  const computedQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
+  const computedPrice = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+  const totalQuantity = cart?.totalQuantity ?? computedQuantity
+  const totalPrice = cart?.totalPrice ?? computedPrice
 
   if (items.length === 0) {
     return (
@@ -121,15 +116,15 @@ function Cart() {
                       <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-full px-3 py-1.5">
                         <button
                           type="button"
-                          onClick={() => run(decreaseQuantity, productId)} 
+                          onClick={() => run(decreaseQuantity, productId)}
                           disabled={isBusy}
                           className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-black disabled:opacity-40">−
                         </button>
                         <span className="w-4 text-center font-medium text-black">{item.quantity}</span>
                         <button
                           type="button"
-                          onClick={() => run(increaseQuantity, productId)} 
-                          disabled={isBusy} 
+                          onClick={() => run(increaseQuantity, productId)}
+                          disabled={isBusy}
                           className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-black disabled:opacity-40">+
                         </button>
                       </div>

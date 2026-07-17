@@ -5,13 +5,13 @@ export const getCurrentUser = async () => {
     return response.data?.data
 }
 
-export const updatePassword = async (password) => {
-    const response = await axiosInstance.patch("/user/update-password", { password })
+export const updatePassword = async (oldPassword, newPassword) => {
+    const response = await axiosInstance.patch("/user/update-password",  {oldPassword, newPassword} )
     return response.data?.data
 }
 
 export const updateAccountDetails = async (data) => {
-    const response = await axiosInstance.patch("/user/update-account", { data })
+    const response = await axiosInstance.patch("/user/update-account", data )
     return response.data?.data
 }
 
