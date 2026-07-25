@@ -49,7 +49,7 @@ function Home() {
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-white via-white/70 sm:via-white/60 to-transparent sm:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r md:bg-gradient-to-r from-white via-white/70 sm:via-white/60 md:from-white/90 md:via-white/20 md:to-transparent to-transparent" />
 
           <div className="relative z-10 px-6 md:px-14 py-6 sm:py-1 max-w-full sm:max-w-lg">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-black mb-3 sm:mb-4">
