@@ -40,49 +40,57 @@ function Home() {
   return (
     <div className="bg-white">
 
-      <section className="max-w-[1300px] mx-auto px-4 pt-5">
-        <div className="relative rounded-[2.5rem] overflow-hidden min-h-[720px] flex items-center">
+      <section className="max-w-7xl mx-auto px-4 pt-5">
+        <div className="relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden min-h-[520px] sm:min-h-[420px] md:min-h-[720px] flex items-end sm:items-center pb-6 sm:pb-0">
 
           <img
             src={img02}
             alt="Freshly folded laundry"
-            className="absolute inset-0 w-full h-full object-fill"
+            className="absolute inset-0 w-full h-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/4 to-transparent " />
+          <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-white via-white/70 sm:via-white/60 to-transparent sm:to-transparent" />
 
-          <div className="relative z-10 px-8 md:px-14 py-14 max-w-lg">
-            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-black mb-4">
+          <div className="relative z-10 px-6 md:px-14 py-6 sm:py-1 max-w-full sm:max-w-lg">
+            <p className="text-xs font-semibold tracking-[0.2em] uppercase text-black mb-3 sm:mb-4">
               Elevate Your Laundry Day
             </p>
-            <h1 className="text-xl md:text-5xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 sm:mb-6">
               Fresh Laundry,
               <br />
               Delivered With Care!
             </h1>
-            <p className="text-gray-600 max-w-sm mb-8">
+            <p className="text-gray-600 max-w-sm mb-6 sm:mb-8 text-sm sm:text-base">
               Book washing, ironing, dry cleaning and more with trusted
               vendors near you — picked up and dropped off at your door.
             </p>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <Link
                 to="/stores"
-                className="bg-black text-white px-7 py-3.5 rounded-full font-semibold text-sm hover:bg-white hover:text-black transition"
+                className="bg-black text-white px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm hover:bg-white hover:text-black transition"
               >
                 Book A Pickup Now
               </Link>
               <Link
                 to="/products"
                 aria-label="Browse services"
-                className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black shadow hover:bg-black hover:text-white transition"
+                className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center text-black shadow hover:bg-black hover:text-white transition"
               >
                 <FaArrowRight className="text-sm" />
               </Link>
             </div>
+
+            <div className="sm:hidden mt-5 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 w-fit">
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900">Trusted Vendors</h2>
+                <p className="text-xs text-gray-400">Rated by 10k+ customers</p>
+              </div>
+            </div>
           </div>
 
-          <div className="absolute bottom-6 right-6 bg-white rounded-2xl shadow-xl px-7 py-4 flex items-center gap-4 max-w-xs">
+        
+          <div className="hidden sm:flex absolute bottom-6 right-6 bg-white rounded-2xl shadow-xl px-4 py-3 items-center gap-3 max-w-xs">
             <div>
               <h2 className="text-sm font-semibold text-gray-900">Trusted Vendors</h2>
               <p className="text-xs text-gray-400">Rated by 10k+ customers</p>
@@ -91,35 +99,37 @@ function Home() {
         </div>
       </section>
 
-      <div className="w-[84%] mx-auto border-t border-gray-300 mt-8"></div>
+      <div className="hidden sm:block w-full mx-auto border-t border-gray-300 mt-8"></div>
 
-      <section className="w-[1300px] flex justify-between mx-auto px-4 py-14 ">
-        <div>
-          <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineTruck className="text-black" /> Free Pickup & Delivery
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">We collect and drop off your laundry at your door.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineClock className="text-black" /> Support 24/7
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">Our team is always here to help with any issue.</p>
-        </div>
-        <div>
-          <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
-            <HiOutlineSparkles className="text-black" /> 100% Verified Vendors
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">Every store is reviewed and rated by real customers.</p>
+      <section className="hidden sm:block max-w-7xl mx-auto px-4 py-14">
+        <div className="grid gap-8 sm:grid-cols-3 ml-8">
+          <div className="text-center sm:text-left">
+            <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
+              <HiOutlineTruck className="text-black" /> Free Pickup & Delivery
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">We collect and drop off your laundry at your door.</p>
+          </div>
+          <div className="text-center sm:text-left">
+            <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
+              <HiOutlineClock className="text-black" /> Support 24/7
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">Our team is always here to help with any issue.</p>
+          </div>
+          <div className="text-center sm:text-left">
+            <h3 className="font-semibold flex items-center justify-center sm:justify-start gap-2">
+              <HiOutlineSparkles className="text-black" /> 100% Verified Vendors
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">Every store is reviewed and rated by real customers.</p>
+          </div>
         </div>
       </section>
 
-      <div className="w-[84%] mx-auto border-t border-gray-300"></div>
+      <div className="hidden sm:block w-full mx-auto border-t border-gray-300"></div>
 
-      <section className="w-[1340px] mx-auto px-4 py-10">
+      <section className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900">Featured Stores</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Featured Stores</h2>
             <p className="text-sm text-gray-400 mt-1">Trusted laundry vendors near you</p>
           </div>
 
@@ -142,7 +152,7 @@ function Home() {
         {stores.length === 0 ? (
           <p className="text-gray-500">No stores found</p>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {stores.slice(0, 6).map((store) => (
               <StoreCard key={store._id} store={store} />
             ))}
@@ -150,16 +160,16 @@ function Home() {
         )}
       </section>
 
-      <div className="w-[84%] mx-auto border-t border-gray-300 mt-8"></div>
+      <div className="w-full mx-auto border-t border-gray-300 mt-8"></div>
 
-      <section className="w-[1340px] mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Popular Services</h2>
-        <p className="text-gray-400 text-sm mb-8">Pick service wheather you what to wash, iron and more</p>
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Popular Services</h2>
+        <p className="text-gray-400 text-xs sm:text-sm mb-6 sm:mb-8">Pick service wheather you what to wash, iron and more</p>
 
         {products.length === 0 ? (
           <p className="text-gray-500 mt-5">No services found</p>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-5">
             {products.slice(0, 8).map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -167,11 +177,11 @@ function Home() {
         )}
       </section>
 
-      <section className="w-[1340px] mx-auto px-4 py-14">
-        <div className="grid md:grid-cols-2 gap-6 items-stretch">
+      <section className="max-w-7xl mx-auto px-4 py-14">
+        <div className="grid gap-6 md:grid-cols-2 items-stretch">
 
 
-          <div className="relative rounded-3xl overflow-hidden min-h-[280px]">
+          <div className="relative rounded-3xl overflow-hidden min-h-[260px]">
             <img
               src={img00}
               className="absolute inset-0 w-full h-full object-cover"
@@ -187,7 +197,7 @@ function Home() {
           </div>
 
 
-          <div className="rounded-3xl overflow-hidden min-h-[480px] bg-white text-black flex flex-col justify-center p-10">
+          <div className="rounded-3xl overflow-hidden min-h-[320px] md:min-h-[480px] bg-white text-black flex flex-col justify-center p-10">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase mb-2 text-gray-400">
               Limited Time Offer
             </p>
@@ -228,10 +238,10 @@ function Home() {
         </div>
       </section>
 
-        <div className="w-[84%] mx-auto border-t border-gray-300 mt-4 mb-14"></div>
+        <div className="w-full mx-auto border-t border-gray-300 mt-4 mb-14"></div>
 
-      <section className="w-[1340px] mx-auto px-4 pb-20">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+      <section className="max-w-7xl mx-auto px-4 pb-20">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-12">
           Why Choose Us?
         </h2>
 

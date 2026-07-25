@@ -27,8 +27,7 @@ function ProductCard({ product }) {
   return (
     <Link to={`/products/${product._id}`} className="block group">
 
-      {/* Image */}
-      <div className="rounded-2xl overflow-hidden aspect-[4/3]">
+      <div className="rounded-2xl overflow-hidden aspect-square md:aspect-[4/3]">
         <img
           src={product.avatar}
           alt={product.itemName}
@@ -36,9 +35,8 @@ function ProductCard({ product }) {
         />
       </div>
 
-      {/* Name + category badge */}
       <div className="flex items-center justify-between mt-4">
-        <h3 className="text-lg font-bold text-black line-clamp-1">
+        <h3 className="text-base md:text-lg font-bold text-black line-clamp-1">
           {product.itemName}
         </h3>
 
@@ -47,12 +45,10 @@ function ProductCard({ product }) {
         </span>
       </div>
 
-      {/* Description */}
       <p className="mt-1.5 text-sm text-gray-400 line-clamp-1">
         {product.description}
       </p>
 
-      {/* Price + add to cart */}
       <div className="flex items-center justify-between mt-3">
         <span className="text-base font-bold text-black">
           ₹{product.price}

@@ -41,7 +41,7 @@ function SignupForm() {
         navigate("/")
       }
     } catch (error) {
-      setError(error)
+      setError(error.response?.data?.message || error.message || "Something went wrong. Please try again.")
     }
   }
 

@@ -4,9 +4,9 @@ import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram, FaPinterestP, FaLinkedi
 function Footer() {
   return (
     <footer className="bg-white text-gray-800 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-14">
+      <div className="max-w-7xl mx-auto px-4 py-10 md:px-6 md:py-14">
 
-        <div className="grid gap-10 md:grid-cols-5">
+        <div className="grid gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
 
           <div>
             <h3 className="font-bold text-black mb-4">Corporate</h3>
@@ -59,7 +59,7 @@ function Footer() {
             </ul>
 
             <h3 className="font-bold text-black mt-6 mb-3">Download our App</h3>
-            <div className="flex flex-col gap-2 max-w-[160px]">
+            <div className="flex flex-col gap-2 max-w-xs">
               <button className="flex items-center gap-2 bg-black text-white rounded-lg px-3 py-2">
                 <FaGooglePlay className="text-lg" />
                 <span className="text-left leading-tight">

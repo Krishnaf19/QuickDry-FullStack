@@ -95,9 +95,9 @@ function ProductDetails() {
           <span className="text-black font-medium">{product.category}</span>
         </p>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid gap-12 lg:grid-cols-2">
 
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 lg:flex-row">
             <div className="flex flex-col gap-3">
               {thumbnails.map((thumb, i) => (
                 <button
@@ -227,7 +227,7 @@ function ProductDetails() {
           <section className="mt-24">
             <h2 className="text-2xl font-bold text-black mb-8">Recommended For You</h2>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
               {recommended.map((item) => (
                 <ProductCard key={item._id} product={item} />
               ))}

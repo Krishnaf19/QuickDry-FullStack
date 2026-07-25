@@ -1,61 +1,83 @@
 import React, { useEffect, useState } from "react"
 import { getUserCart, increaseQuantity, decreaseQuantity, removeItem, clearCart } from "../api/cart.api"
-import { createOrder } from "../api/order.api"
-import { FaTrash } from "react-icons/fa"
+import { createRazorpayOrder, verifyPayment } from "../api/payment.api"
+import { FaTrash, FaLock } from "react-icons/fa"
 
-function Cart() {
-  
-  const [cart, setCart] = useState(null)
+function Cart({ user }) {
+
+  const [cart, setCart] = useState({ items: [] })
   const [loading, setLoading] = useState(true)
-  const [busyId, setBusyId] = useState(null)
-  const [placingOrder, setPlacingOrder] = useState(false)
+  const [paying, setPaying] = useState(false)
+
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://checkout.razorpay.com/v1/checkout.js"
+    document.body.appendChild(script)
+  }, [])
+
 
   const fetchCart = async () => {
     try {
       setCart(await getUserCart())
-    } catch (error) {
+    } catch {
       setCart({ items: [] })
     } finally {
       setLoading(false)
     }
   }
 
+
   useEffect(() => {
     fetchCart()
   }, [])
 
 
-  const run = async (fn, productId) => {
-    setBusyId(productId)
+  const update = async (fn, productId) => {
     try {
       await fn(productId)
-      await fetchCart()
+      fetchCart()
     } catch (error) {
       alert(error.response?.data?.message || "Something went wrong")
-    } finally {
-      setBusyId(null)
     }
   }
 
-  const handleClearCart = async () => {
-    try {
-      await clearCart()
-      await fetchCart()
-    } catch (error) {
-      alert(error.response?.data?.message || "Could not clear cart")
-    }
-  }
 
-  const placeOrder = async () => {
-    setPlacingOrder(true)
+  const handlePayment = async () => {
+    setPaying(true)
     try {
-      await createOrder()
-      await fetchCart()
-      alert("Order placed successfully")
+      const { key, orderId, amount, currency } = await createRazorpayOrder()
+
+      const razorpay = new window.Razorpay({
+        key,
+        amount,
+        currency,
+        order_id: orderId,
+        name: "QuickDry",
+        description: "Laundry service payment",
+        theme: { color: "#000000" },
+        prefill: {
+          name: user?.fullName,
+          email: user?.email,
+          contact: user?.phoneNumber,
+        },
+        handler: async (response) => {
+          try {
+            await verifyPayment(response)
+            await fetchCart()
+            alert("Payment successful — your order has been placed!")
+          } catch (error) {
+            alert(error.response?.data?.message || "Payment verification failed")
+          }
+          setPaying(false)
+        },
+        modal: { ondismiss: () => setPaying(false) },
+      })
+
+      razorpay.open()
     } catch (error) {
-      alert(error.response?.data?.message || "Could not place order")
-    } finally {
-      setPlacingOrder(false)
+      alert(error.response?.data?.message || "Could not start payment")
+      setPaying(false)
     }
   }
 
@@ -67,16 +89,13 @@ function Cart() {
     )
   }
 
-  const items = cart?.items || []
-
-  const computedQuantity = items.reduce((sum, item) => sum + item.quantity, 0)
-  const computedPrice = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-  const totalQuantity = cart?.totalQuantity ?? computedQuantity
-  const totalPrice = cart?.totalPrice ?? computedPrice
+  const items = cart.items || []
+  const totalPrice = cart.totalPrice ?? items.reduce((sum, i) => sum + i.product.price * i.quantity, 0)
+  const totalQuantity = cart.totalQuantity ?? items.reduce((sum, i) => sum + i.quantity, 0)
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col gap-2 justify-center items-center bg-white mt-40 mb-40">
+      <div className="flex flex-col gap-2 justify-center items-center bg-white mt-20 mb-20 sm:mt-40 sm:mb-40 px-4">
         <h2 className="text-2xl font-semibold text-gray-400">Your cart is empty</h2>
         <p className="text-gray-400 text-sm">Browse services and add something to get started.</p>
       </div>
@@ -84,10 +103,10 @@ function Cart() {
   }
 
   return (
-    <div className="bg-white py-24 px-6">
+    <div className="bg-white py-12 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-black tracking-tight mb-2">Shopping Cart</h1>
-        <p>Add product to cart and check more laundry</p>
+        <p className="text-gray-500">Add product to cart and check more laundry</p>
 
         <div className="grid lg:grid-cols-3 gap-8 items-start mt-10">
           <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-6">
@@ -98,58 +117,44 @@ function Cart() {
             </div>
 
             <div className="divide-y divide-gray-200">
-              {items.map((item) => {
-                const productId = item.product._id
-                const isBusy = busyId === productId
-
-                return (
-                  <div key={productId} className="grid sm:grid-cols-[2fr_1fr_1fr_auto] items-center gap-4 py-5">
-                    <div className="flex items-center gap-4">
-                      <img src={item.product.avatar} alt={item.product.itemName} className="w-16 h-16 rounded-xl object-cover" />
-                      <div>
-                        <h3 className="font-semibold text-black">{item.product.itemName}</h3>
-                        <p className="text-sm text-gray-400">{item.product.category}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex sm:justify-center">
-                      <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-full px-3 py-1.5">
-                        <button
-                          type="button"
-                          onClick={() => run(decreaseQuantity, productId)}
-                          disabled={isBusy}
-                          className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-black disabled:opacity-40">−
-                        </button>
-                        <span className="w-4 text-center font-medium text-black">{item.quantity}</span>
-                        <button
-                          type="button"
-                          onClick={() => run(increaseQuantity, productId)}
-                          disabled={isBusy}
-                          className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-black disabled:opacity-40">+
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="sm:text-right font-semibold text-black">₹{item.product.price * item.quantity}</div>
-
-                    <div className="sm:text-right">
-                      <button
-                        type="button"
-                        onClick={() => run(removeItem, productId)} disabled={isBusy} className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-40" title="Remove item">
-                        <FaTrash size={15} />
-                      </button>
+              {items.map((item) => (
+                <div key={item.product._id} className="grid grid-cols-[1fr_auto] sm:grid-cols-[2fr_1fr_1fr_auto] items-center gap-x-4 gap-y-3 py-5">
+                  <div className="flex items-center gap-4 col-span-2 sm:col-span-1">
+                    <img src={item.product.avatar} alt={item.product.itemName} className="w-16 h-16 rounded-xl object-cover" />
+                    <div>
+                      <h3 className="font-semibold text-black">{item.product.itemName}</h3>
+                      <p className="text-sm text-gray-400">{item.product.category}</p>
                     </div>
                   </div>
-                )
-              })}
+
+                  <div className="flex sm:justify-center">
+                    <div className="flex items-center gap-3 bg-gray-50 border border-gray-100 rounded-full px-3 py-1.5">
+                      <button onClick={() => update(decreaseQuantity, item.product._id)} className="w-5 h-5 text-gray-500 hover:text-black">−</button>
+                      <span className="w-4 text-center font-medium text-black">{item.quantity}</span>
+                      <button onClick={() => update(increaseQuantity, item.product._id)} className="w-5 h-5 text-gray-500 hover:text-black">+</button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-4">
+                    <span className="text-right font-semibold text-black">₹{item.product.price * item.quantity}</span>
+
+                    <button onClick={() => update(removeItem, item.product._id)} className="text-gray-400 hover:text-red-500" title="Remove item">
+                      <FaTrash size={15} />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <button type="button" onClick={handleClearCart} className="mt-6 bg-black text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors">
+            <button
+              onClick={() => update(clearCart)}
+              className="mt-6 bg-black text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-gray-800 transition-colors"
+            >
               Clear Cart
             </button>
           </div>
 
-          <div className="bg-white rounded-3xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-6 sticky top-24">
+          <div className="bg-white rounded-3xl border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-6 lg:sticky lg:top-24">
             <h2 className="text-xl font-bold text-black mb-6">Order Summary</h2>
 
             <div className="space-y-3 text-sm">
@@ -165,9 +170,17 @@ function Cart() {
               <span>₹{totalPrice}</span>
             </div>
 
-            <button type="button" onClick={placeOrder} disabled={placingOrder} className="w-full bg-black text-white py-3 rounded-full font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50">
-              {placingOrder ? "Placing Order..." : "Checkout Now"}
+            <button
+              onClick={handlePayment}
+              disabled={paying}
+              className="w-full flex items-center justify-center gap-2 bg-black text-white py-3.5 rounded-full font-semibold hover:bg-gray-800 transition-colors disabled:opacity-50"
+            >
+              {paying ? "Processing..." : `Pay ₹${totalPrice}`}
             </button>
+
+            <p className="text-xs text-gray-400 text-center mt-4">
+              100% secure checkout — payments powered by Razorpay
+            </p>
           </div>
         </div>
       </div>

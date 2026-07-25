@@ -26,7 +26,7 @@ function Stores() {
   }, [dispatch]);
 
   return (
-    <div className="bg-gray-50 pt-15 pb-15">
+    <div className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-6">
 
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -44,7 +44,7 @@ function Stores() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {stores.map((store) => (
               <StoreCard
                 key={store._id}

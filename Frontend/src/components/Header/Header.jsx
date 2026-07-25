@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutBtn from "./LogoutBtn";
+import { FaHome, FaStore, FaShoppingCart, FaUser, FaClipboardList } from "react-icons/fa";
 
 function Header() {
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-black/5">
+    <>
+      <header className="sticky top-0 z-50 bg-white border-b border-black/5">
       <div className="max-w-7xl mx-auto h-20 px-6 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="items-center">
@@ -49,7 +51,6 @@ function Header() {
           </h1>
         </Link>
 
-        {/* Center nav - plain text, uppercase, tracked out, like the reference */}
         <nav className="text-xl hidden md:flex items-center gap-8">
           {navItems.map(
             (item) =>
@@ -65,20 +66,19 @@ function Header() {
           )}
         </nav>
 
-        {/* Right side */}
         <div className="flex items-center gap-3">
           {!authStatus && (
             <>
               <button
                 onClick={() => navigate("/login")}
-                className="hidden sm:inline-block text-xs font-medium tracking-[0.05em] uppercase text-gray-600 hover:text-black transition-colors px-2"
+                className="text-xs font-medium tracking-[0.05em] uppercase text-gray-600 hover:text-black transition-colors px-2"
               >
                 Login
               </button>
 
               <button
                 onClick={() => navigate("/signup")}
-                className="bg-black text-white text-xs font-semibold uppercase tracking-[0.05em] px-6 py-3 rounded-full hover:bg-gray-800 transition-colors"
+                className="bg-black text-white text-xs font-semibold uppercase tracking-[0.05em] px-4 py-3 rounded-full hover:bg-gray-800 transition-colors"
               >
                 Sign up
               </button>
@@ -89,6 +89,33 @@ function Header() {
         </div>
       </div>
     </header>
+
+    
+      <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
+        <nav className="bg-white rounded-full shadow-lg border border-black/5 flex items-center justify-between px-3 py-2">
+          <Link to="/" className="flex-1 text-center text-gray-700 hover:text-black py-2">
+            <FaHome className="mx-auto" />
+            <span className="text-[10px] block">Home</span>
+          </Link>
+          <Link to="/stores" className="flex-1 text-center text-gray-700 hover:text-black py-2">
+            <FaStore className="mx-auto" />
+            <span className="text-[10px] block">Stores</span>
+          </Link>
+          <Link to="/cart" className="flex-1 text-center text-gray-700 hover:text-black py-2">
+            <FaShoppingCart className="mx-auto" />
+            <span className="text-[10px] block">Cart</span>
+          </Link>
+          <Link to="/my-orders" className="flex-1 text-center text-gray-700 hover:text-black py-2">
+            <FaClipboardList className="mx-auto" />
+            <span className="text-[10px] block">Orders</span>
+          </Link>
+          <Link to="/profile" className="flex-1 text-center text-gray-700 hover:text-black py-2">
+            <FaUser className="mx-auto" />
+            <span className="text-[10px] block">Profile</span>
+          </Link>
+        </nav>
+      </div>
+    </>
   );
 }
 

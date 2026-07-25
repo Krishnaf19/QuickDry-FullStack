@@ -1,6 +1,7 @@
 import cookieParser from "cookie-parser"
 import express from "express"
 import cors from "cors"
+import { razorpayWebhook } from "./controllers/payment.controller.js"
 
 const app = express()
 
@@ -13,6 +14,13 @@ app.use(cors({
     origin: allowedOrigins,
     credentials: true,
 }))
+
+app.post(
+    "/api/v1/payment/webhook",
+    express.raw({ type: "application/json" }),
+    razorpayWebhook
+)
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("public"))
@@ -26,6 +34,7 @@ import productRoute from "./routes/product.route.js"
 import reviewRoute from "./routes/review.route.js"
 import cartRoute from "./routes/cart.route.js"
 import orderRoute from "./routes/order.route.js"
+import paymentRoute from "./routes/payment.route.js"
 
 app.use("/api/v1/user", userRouter)
 app.use("/api/v1/store", storeRoute)
@@ -33,5 +42,6 @@ app.use("/api/v1/product", productRoute)
 app.use("/api/v1/review", reviewRoute)
 app.use("/api/v1/cart", cartRoute)
 app.use("/api/v1/order", orderRoute)
+app.use("/api/v1/payment", paymentRoute)
 
 export default app

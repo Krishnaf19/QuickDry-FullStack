@@ -49,7 +49,7 @@ function Order() {
                   </div>
                   <div>
                     <p className="text-gray-400">Payment</p>
-                    <p className="font-medium text-black">{order.paymentStatus}</p>
+                    <p className="font-medium text-black">{order.status}</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-400">
@@ -87,4 +87,4 @@ function Order() {
   );
 }
 
-export default Order;
+export default Order
