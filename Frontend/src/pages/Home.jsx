@@ -99,7 +99,7 @@ function Home() {
         </div>
       </section>
 
-      <div className="hidden sm:block w-full mx-auto border-t border-gray-300 mt-8"></div>
+      <div className="hidden sm:block w-[90%] mx-auto border-t border-gray-300 mt-8"></div>
 
       <section className="hidden sm:block max-w-7xl mx-auto px-4 py-14">
         <div className="grid gap-8 sm:grid-cols-3 ml-8">
@@ -124,7 +124,7 @@ function Home() {
         </div>
       </section>
 
-      <div className="hidden sm:block w-full mx-auto border-t border-gray-300"></div>
+      <div className="hidden sm:block w-[90%] mx-auto border-t border-gray-300"></div>
 
       <section className="max-w-7xl mx-auto px-4 py-10">
         <div className="flex items-end justify-between mb-8">
@@ -160,7 +160,7 @@ function Home() {
         )}
       </section>
 
-      <div className="w-full mx-auto border-t border-gray-300 mt-8"></div>
+      <div className="w-[90%] mx-auto border-t border-gray-300 mt-8"></div>
 
       <section className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">Popular Services</h2>
@@ -238,7 +238,7 @@ function Home() {
         </div>
       </section>
 
-        <div className="w-full mx-auto border-t border-gray-300 mt-4 mb-14"></div>
+        <div className="w-[90%] mx-auto border-t border-gray-300 mt-8 mb-8"></div>
 
       <section className="max-w-7xl mx-auto px-4 pb-20">
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-12">

@@ -26,6 +26,17 @@ const cartSchema = new Schema({
     store: {
         type: mongoose.Types.ObjectId,
         ref: "Store"
+    },
+
+    scheduledDate: {
+        type: Date,
+        default: null
+    },
+ 
+    scheduledSlot: {
+        type: String,
+        enum: ["Morning (8AM - 11AM)", "Afternoon (12PM - 3PM)", "Evening (4PM - 7PM)"],
+        default: null
     }
 },
     {

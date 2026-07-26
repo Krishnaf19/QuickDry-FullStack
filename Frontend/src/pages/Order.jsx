@@ -44,6 +44,15 @@ function Order() {
                     </p>
                   </div>
                   <div>
+                    <p className="text-gray-400">Scheduled Dropoff</p>
+                    <p className="font-medium text-black">
+                      {order.scheduledDate ? new Date(order.scheduledDate).toLocaleDateString() : "Not scheduled"}
+                    </p>
+                    {order.scheduledSlot && (
+                      <p className="text-xs text-gray-400">{order.scheduledSlot}</p>
+                    )}
+                  </div>
+                  <div>
                     <p className="text-gray-400">Total Amount</p>
                     <p className="font-medium text-black">₹{order.totalPrice}</p>
                   </div>

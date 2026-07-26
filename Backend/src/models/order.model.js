@@ -38,6 +38,15 @@ const orderSchema = new Schema({
         enum: ["Pending", "Delivered", "Canceled", "Shipped", "Reached Laundry"],
         default: "Pending"
     },
+
+    scheduledDate: {
+        type: Date
+    },
+
+    scheduledSlot: {
+        type: String,
+        enum: ["Morning (8AM - 11AM)", "Afternoon (12PM - 3PM)", "Evening (4PM - 7PM)"]
+    },
     
     razorpayOrderId: {
         type: String,
@@ -53,7 +62,9 @@ const orderSchema = new Schema({
         type: String,
         enum: ["pending", "paid", "failed"],
         default: "pending"
-    }
+    },
+
+    
 
 }, { timestamps: true })
 

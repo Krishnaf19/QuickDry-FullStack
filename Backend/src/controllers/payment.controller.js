@@ -11,11 +11,21 @@ import crypto from "crypto"
 
 const razorPayOrder = asyncHandler(async (req, res) => {
 
+    const { scheduledDate, scheduledSlot } = req.body
+
+    if (!scheduledDate || !scheduledSlot) {
+        throw new ApiError(400, "Please choose a pickup date and time slot")
+    }
+
     const cart = await Cart.findOne({ user: req.user?._id }).
         populate("items.product")
 
     if (!cart || cart.items.length === 0) {
         throw new ApiError(400, "Cart is empty")
+    }
+
+    if (!cart.store) {
+        throw new ApiError(400, "Store not found in cart. Please add items before checkout")
     }
 
     const totalPrice = cart.items.reduce(
@@ -32,8 +42,13 @@ const razorPayOrder = asyncHandler(async (req, res) => {
     const order = await Order.create({
         user: req.user?._id,
         store: cart.store,
-        items: cart.items,
+        items: cart.items.map(item => ({
+            product: item.product._id,
+            quantity: item.quantity
+        })),
         totalPrice,
+        scheduledDate: new Date(scheduledDate + "T00:00:00Z"),
+        scheduledSlot,
         razorpayOrderId: razorOrder.id,
         status: "pending"
     })
@@ -80,7 +95,10 @@ const verifyPayment = asyncHandler(async (req, res) => {
         {
             new: true
         }
-    )
+    ).populate({
+        path: "items.product",
+        select: "itemName category price description avatar"
+    })
 
     if (!order) {
         throw new ApiError(404, "Order not found for this payment")
@@ -88,7 +106,12 @@ const verifyPayment = asyncHandler(async (req, res) => {
 
     await Cart.findOneAndUpdate(
         { user: req.user._id, store: order.store },
-        { items: [] }
+        { 
+            items: [],
+            store: null,
+            scheduledDate: null,
+            scheduledSlot: null
+        }
     )
 
     return res.status(200).json(
@@ -128,7 +151,12 @@ const razorpayWebhook = asyncHandler(async (req, res) => {
         if (order) {
             await Cart.findOneAndUpdate(
                 { user: order.user._id, store: order.store },
-                { items: [] }
+                { 
+                    items: [],
+                    store: null,
+                    scheduledDate: null,
+                    scheduledSlot: null
+                }
             )
 
             try {
@@ -140,7 +168,7 @@ const razorpayWebhook = asyncHandler(async (req, res) => {
                            <p>Your payment was successful and your order has been confirmed.</p>
                            <p><strong>Order ID:</strong> ${order._id}</p>
                            <p><strong>Amount Paid:</strong> ₹${order.totalPrice}</p>
-                           <p><strong>Status:</strong> ${order.orderStatus}</p>`
+                           <p><strong>Status:</strong> ${order.status}</p>`
                 })
             } catch (error) {
                 console.error("Order confirmation email failed:", error.message)
