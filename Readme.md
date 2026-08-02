@@ -93,4 +93,4 @@ http://localhost:5173
 
 ## License
 
-This project is open for educational and personal use.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
