@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: ./Backend
+    restart: unless-stopped
+    ports: 
+      - "8000:8000"
+    env_file:
+      - ./Backend/.env
+    networks:
+      - laundry-network
+  frontend:
+    build: 
+      context: ./Frontend 
+      args: 
+        VITE_API_URL: "http://localhost:8000/api/v1"
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    
+    networks:
+      - laundry-network
+    depends_on:
+      - backend
+
+networks:
+  laundry-network:
+    driver: bridge
