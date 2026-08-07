@@ -1,7 +1,12 @@
 import cookieParser from "cookie-parser"
 import express from "express"
 import cors from "cors"
+import path from "path"
+import { fileURLToPath } from "url"
 import { razorpayWebhook } from "./controllers/payment.controller.js"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -38,5 +43,10 @@ app.use("/api/v1/review", reviewRoute)
 app.use("/api/v1/cart", cartRoute)
 app.use("/api/v1/order", orderRoute)
 app.use("/api/v1/payment", paymentRoute)
+
+// SPA 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public", "index.html"))
+})
 
 export default app
