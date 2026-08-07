@@ -1,24 +1,32 @@
 FROM node:20-alpine AS frontend-builder
 
-COPY ./Frontend /app
-
 WORKDIR /app
+
+COPY ./Frontend/package*.json ./
 
 RUN npm install
 
-RUN npm run build
+COPY ./Frontend .
 
-CMD ["npm", "run", "dev"]
+ARG VITE_API_URL
+
+ENV VITE_API_URL=$VITE_API_URL
+
+RUN npm run build
 
 
 FROM node:20-alpine
 
-COPY ./Backend /app
-
 WORKDIR /app
+
+COPY ./Backend/package*.json ./
 
 RUN npm install
 
-COPY --from=frontend-builder /app/dist /app/public
+COPY ./Backend .
 
-CMD ["npm", "run", "dev"]
+COPY --from=frontend-builder /app/dist ./public
+
+EXPOSE 8000
+
+CMD ["node", "src/index.js"]
