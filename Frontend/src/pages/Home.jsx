@@ -53,7 +53,7 @@ function Home() {
 
           <div className="relative z-10 px-6 md:px-14 py-6 sm:py-1 max-w-full sm:max-w-lg">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-black mb-3 sm:mb-4">
-              Elevate Your Laundry Day
+              Elevate Your Laundry Day Krishna
             </p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 sm:mb-6">
               Fresh Laundry,
