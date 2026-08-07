@@ -45,8 +45,7 @@ app.use("/api/v1/order", orderRoute)
 app.use("/api/v1/payment", paymentRoute)
 
 // SPA 
-app.get("/*splat", (req, res) => {
+app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, "..", "public", "index.html"))
 })
-
 export default app
